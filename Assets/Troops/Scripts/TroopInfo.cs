@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TroopInfo : MonoBehaviour
 {
-    public Sprite troopSprite;
+    public Sprite sprite;
     public int count;
 
 }
