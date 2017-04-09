@@ -34,7 +34,10 @@ public class TroopCard : MonoBehaviour
     {
         troopImage.enabled = false;
         troopCount.enabled = false;
-        Instantiate(troopPrefab, position, Quaternion.identity);
+
+        Transform troopsParent = FindObjectOfType<TroopsManager>().transform;
+
+        Instantiate(troopPrefab, position, Quaternion.identity, troopsParent);
         troopPrefab = null;
     }
 
