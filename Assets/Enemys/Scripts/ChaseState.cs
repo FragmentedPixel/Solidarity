@@ -12,6 +12,12 @@ public class ChaseState : iEnemyState
 
 	public override void StateUpdate ()
 	{
+        if (!controller.target)
+        {
+            ToPatrolState();
+            return;
+        }
+
         Chase();
         Look();
 

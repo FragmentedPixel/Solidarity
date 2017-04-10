@@ -14,9 +14,15 @@ public class TroopHitPoints : MonoBehaviour
             Destroy(gameObject);
     }
 
-    public void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision other)
     {
-        // Check if there are any collisions with enemy projectiles.
+        EnemyProjectile proj = other.transform.GetComponent<EnemyProjectile>();
+
+        if(proj != null)
+        {
+            TakeDamage(proj.damage);
+            Destroy(proj.gameObject);
+        }
     }
 
 }

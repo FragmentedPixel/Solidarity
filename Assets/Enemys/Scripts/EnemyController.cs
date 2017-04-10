@@ -27,13 +27,13 @@ public class EnemyController : MonoBehaviour
     [HideInInspector] public NavMeshAgent agent;
     #endregion
 
-	private void Start ()
+	private void Awake()
 	{
         agent = GetComponent<NavMeshAgent>();
 
         patrolState = new PatrolState(this);
 		chaseState = new ChaseState(this);
-		attackState = new AttackState(this);
+		
 
 		currentState = patrolState;
 	}
@@ -47,14 +47,4 @@ public class EnemyController : MonoBehaviour
 	{
         currentState.OnTriggerEnter(other);
 	}
-
-    private void DebugState()
-    {
-        if (currentState is ChaseState)
-            Debug.Log("C");
-        else if (currentState is PatrolState)
-            Debug.Log("P");
-        else if (currentState is AttackState)
-            Debug.Log("A");
-    }
 }

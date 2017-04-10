@@ -14,15 +14,4 @@ public class EnemyHitPoints : MonoBehaviour
         if (health <= 0f)
             Destroy(gameObject);
     }
-
-    public void OnCollisionEnter(Collision collision)
-    {
-        Projectile projectile = collision.transform.GetComponent<Projectile>();
-        if(projectile !=  null)
-        {
-            TakeDamage(projectile.damage);
-            Destroy(projectile.gameObject);
-        }
-    }
-
 }
