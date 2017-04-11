@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class iTroopState
 {
-    TroopController controller;
+    public TroopController controller;
 
     public iTroopState(TroopController troopController)
     {
@@ -13,8 +13,8 @@ public abstract class iTroopState
 
     public abstract void StateUpdate();
     public abstract void OnTriggerEnter(Collider other);
-
-    public abstract void ToIdleState();
+    
     public abstract void ToWalkState();
-    public abstract void ToAttackState();
+    public abstract void ToAggroState();
+    public abstract void ToFightState();
 }

@@ -34,7 +34,6 @@ public class EnemyController : MonoBehaviour
         patrolState = new PatrolState(this);
 		chaseState = new ChaseState(this);
 		
-
 		currentState = patrolState;
 	}
 

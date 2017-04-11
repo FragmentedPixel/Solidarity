@@ -33,7 +33,7 @@ public class MeleeAttackState : AttackState
 
         if (currentTime > controller.attackCooldown)
         {
-            Debug.Log("Player should attack");
+            Debug.Log("Player should melee attack");
             currentTime = 0f;
             TroopHitPoints troopHitPoints = controller.target.GetComponent<TroopHitPoints>();
             troopHitPoints.TakeDamage(controller.attackDamage);

@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyHitPoints : MonoBehaviour
 {
     public float health;
-    //public float priority;
+    public float priority;
 
     public void TakeDamage(float damageToTake)
     {
