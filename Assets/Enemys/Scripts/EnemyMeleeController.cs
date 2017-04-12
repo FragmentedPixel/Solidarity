@@ -8,4 +8,10 @@ public class EnemyMeleeController : EnemyController
     {
         attackState = new MeleeAttackState(this);
     }
+
+    public void DealDamage()
+    {
+        TroopHitPoints troopHitPoints = target.GetComponent<TroopHitPoints>();
+        troopHitPoints.TakeDamage(attackDamage);
+    }
 }

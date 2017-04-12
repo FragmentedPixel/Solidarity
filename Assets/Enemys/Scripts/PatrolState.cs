@@ -23,13 +23,19 @@ public class PatrolState : iEnemyState
         if(other.GetComponent<TroopController>() != null)
         {
             controller.target = other.transform;
-            ToChaseState();
+			float distance = Vector3.Distance (controller.transform.position, controller.target.position);
+
+			if (distance < controller.attackRange)
+				ToAttackState ();
+			else if(distance < controller.sightRange)
+				ToChaseState ();
         }
     }
 
     private void Patrol ()
 	{
         controller.agent.Resume();
+
 		if (controller.agent.remainingDistance <= controller.agent.stoppingDistance && !controller.agent.pathPending) 
 		{
 			index = (index + 1) % controller.wayPointsParent.childCount; 

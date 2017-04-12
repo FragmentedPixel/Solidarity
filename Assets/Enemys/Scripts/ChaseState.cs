@@ -12,14 +12,18 @@ public class ChaseState : iEnemyState
 
 	public override void StateUpdate ()
 	{
-        if (!controller.target)
-        {
+        if (controller.target)
+            Chase();
+        else if (!controller.SearchForTargets()) //No other targets in range => Go to patrol.
             ToPatrolState();
-            return;
-        }
+	}
 
-        Chase();
-        Look();
+    #region Methods
+    private void Chase()
+    {
+        controller.agent.Resume();
+        controller.agent.SetDestination(controller.target.position);
+        controller.LookAtTarget();
 
         float distance = Vector3.Distance(controller.transform.position, controller.target.position);
 
@@ -27,20 +31,6 @@ public class ChaseState : iEnemyState
             ToAttackState();
         if (distance > controller.sightRange)
             ToPatrolState();
-	}
-
-    #region Methods
-
-    private void Look()
-    {
-        Vector3 lookPoint = new Vector3(controller.target.position.x, controller.transform.position.y, controller.target.position.z);
-        controller.transform.LookAt(lookPoint);
-    }
-
-    private void Chase()
-    {
-        controller.agent.Resume();
-        controller.agent.SetDestination(controller.target.position);
     }
 
     public override void OnTriggerEnter(Collider other)
