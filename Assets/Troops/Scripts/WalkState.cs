@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class WalkState : iTroopState
 {
-    private int index = -1;
-
     public WalkState(TroopController troopController) : base(troopController)
     {
 
@@ -24,22 +22,36 @@ public class WalkState : iTroopState
         if(enemyHP != null)
         {
             controller.target = enemyHP.transform;
-            ToAggroState();
+			float distance = Vector3.Distance (controller.transform.position, controller.target.position);
+			if (distance > controller.fightRange)
+				ToAggroState ();
+			else
+				ToFightState ();
         }
     }
 
     private void Walk()
     {
-        if(controller.agent.remainingDistance < controller.agent.stoppingDistance && !controller.agent.pathPending)
-        {
-            controller.agent.Resume();
-            index = (index + 1) % controller.wayPoints.Length;
-            controller.agent.SetDestination(controller.wayPoints[index]);
+		controller.agent.Resume ();
+		controller.agent.SetDestination (controller.wayPoints[0]);
+        
+		if(controller.agent.remainingDistance < controller.agent.stoppingDistance && !controller.agent.pathPending)
+		{
+			controller.agent.Resume ();
+			controller.wayPoints.Remove (controller.wayPoints[0]);
+
+			if (controller.wayPoints.Count == 0)
+				ToIdleState ();
         }
     }
     #endregion
 
     #region Transitions
+	private void ToIdleState()
+	{
+		controller.currentState = controller.idleState;
+	}
+
     public override void ToFightState()
     {
         controller.currentState = controller.fightState;

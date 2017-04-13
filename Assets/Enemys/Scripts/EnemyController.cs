@@ -49,7 +49,7 @@ public class EnemyController : MonoBehaviour
         currentState.OnTriggerEnter(other);
 
 		TroopHitPoints troopHP = other.GetComponent<TroopHitPoints> ();
-		if (troopHP != null) 
+		if (troopHP != null && !targets.Contains(troopHP.transform))
 			targets.Add (troopHP.transform);
 	}
 	private void OnTriggerExit(Collider other)

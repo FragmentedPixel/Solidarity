@@ -35,6 +35,7 @@ public class PatrolState : iEnemyState
     private void Patrol ()
 	{
         controller.agent.Resume();
+		//TODO: Opreste-l din a merge pana la pozitia fostului target.
 
 		if (controller.agent.remainingDistance <= controller.agent.stoppingDistance && !controller.agent.pathPending) 
 		{

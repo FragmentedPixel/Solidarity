@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FightState : iTroopState
+public abstract class FightState : iTroopState
 {
+	public float currentTime;
+
     public FightState(TroopController troopController) : base(troopController)
     {
 
@@ -11,24 +13,39 @@ public class FightState : iTroopState
 
     public override void StateUpdate()
     {
-        Fight();
-
-        float distance = Vector3.Distance(controller.transform.position, controller.target.position);
-        if (distance > controller.sightRange)
-            ToWalkState();
-        if (distance > controller.attackRange)
-            ToAggroState();
+		if (controller.target)
+			FightTarget ();
+		else if (controller.SearchForTargets ())
+			ToAggroState ();
+		else
+			ToWalkState ();
     }
 
     #region Methods
+	public abstract void Fight ();
+
     public override void OnTriggerEnter(Collider other)
     {
 
     }
 
-    private void Fight()
+	private void FightTarget()
     {
         controller.agent.Stop();
+		controller.LookAtTarget ();
+
+		if (currentTime > controller.fightCoolDown) {
+			Fight ();
+			currentTime = 0f;
+		} else
+			currentTime += Time.deltaTime;
+
+		float distance = Vector3.Distance(controller.transform.position, controller.target.position);
+
+		if (distance > controller.sightRange)
+			ToWalkState();
+		else if (distance > controller.fightRange)
+			ToAggroState();
     }
     
     #endregion

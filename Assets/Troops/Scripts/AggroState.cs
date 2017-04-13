@@ -11,23 +11,28 @@ public class AggroState : iTroopState
 
     public override void StateUpdate()
     {
-        Aggro();
-
-        float distance = Vector3.Distance(controller.transform.position, controller.target.position);
-        if (distance > controller.sightRange)
-            ToWalkState();
-        if (distance < controller.attackRange)
-            ToFightState();
+		if (controller.target)
+			Aggro ();
+		else if (!controller.SearchForTargets ())
+			ToWalkState ();
     }
 
     #region Methods
     public override void OnTriggerEnter(Collider other)
     {
+		
     }
 
     private void Aggro()
     {
+		controller.agent.Resume ();
         controller.agent.SetDestination(controller.target.position);
+
+		float distance = Vector3.Distance(controller.transform.position, controller.target.position);
+		if (distance > controller.sightRange)
+			ToWalkState();
+		if (distance < controller.fightRange)
+			ToFightState();
     }
     #endregion
 

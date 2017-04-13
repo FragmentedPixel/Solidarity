@@ -14,7 +14,7 @@ public class ChaseState : iEnemyState
 	{
         if (controller.target)
             Chase();
-        else if (!controller.SearchForTargets()) //No other targets in range => Go to patrol.
+        else if (!controller.SearchForTargets())
             ToPatrolState();
 	}
 

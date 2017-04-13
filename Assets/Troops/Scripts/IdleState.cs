@@ -12,13 +12,23 @@ public class IdleState : iTroopState
 
     public override void StateUpdate()
     {
-
+		if (controller.wayPoints.Count > 0)
+			ToWalkState ();
     }
 
     #region Methods
     public override void OnTriggerEnter(Collider other)
     {
-        
+		EnemyHitPoints enemyHP = other.transform.GetComponent<EnemyHitPoints> ();
+		if (enemyHP != null) 
+		{
+			controller.target = enemyHP.transform;
+			float distance = Vector3.Distance (controller.transform.position, controller.target.position);
+			if (distance > controller.fightRange)
+				ToAggroState ();
+			else
+				ToFightState ();
+		}
     }
     #endregion
 
