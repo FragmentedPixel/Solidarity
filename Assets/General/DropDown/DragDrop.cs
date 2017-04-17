@@ -7,14 +7,7 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public static GameObject draggedObject;
 
-    private GameObject location;
     private Vector3 startPosition;
-
-    private void Start()
-    {
-        location = GameObject.FindGameObjectWithTag("Location");
-        location.transform.position = -Vector3.one;
-    }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -27,14 +20,10 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     public void OnDrag(PointerEventData eventData)
     {
         transform.position = eventData.position;
-
-        location.transform.position = MouseCast();
-    }
+	}
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        location.transform.position = -Vector3.one;
-
         Vector3 hitPoint = MouseCast();
 
         if(hitPoint != -Vector3.one)

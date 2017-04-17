@@ -9,11 +9,13 @@ public class TroopsManager : MonoBehaviour
 
 	private LineRenderer lineRenderer;
 	private List<TroopController> troops = new List<TroopController>();
+
 	private bool showPath;
+	private Vector3 initDestinationPosition;
 
 	private void Start()
 	{
-		lineRenderer = GetComponent<LineRenderer> ();
+		initDestinationPosition = destinationIndicator.transform.position;
 	}
 
 	private void Update()
@@ -69,7 +71,7 @@ public class TroopsManager : MonoBehaviour
 	{
 		Vector3? position = MouseRay ();
 		if (position == null)
-			destinationIndicator.transform.position = -Vector3.one;
+			destinationIndicator.transform.position = initDestinationPosition;
 		else
 			destinationIndicator.transform.position = position.Value;
 	}
@@ -93,7 +95,7 @@ public class TroopsManager : MonoBehaviour
 	public void SendTroops()
 	{
 		Vector3? position = MouseRay ();
-		destinationIndicator.transform.position = -Vector3.one;
+		destinationIndicator.transform.position = initDestinationPosition;
 		if (position == null)
 			return;
 
