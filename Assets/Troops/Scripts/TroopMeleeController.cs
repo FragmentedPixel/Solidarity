@@ -11,6 +11,7 @@ public class TroopMeleeController : TroopController
 
 	public void DealDamage()
 	{
-		Debug.Log ("Player should attack.");
+		EnemyHitPoints enemyHP = target.GetComponent<EnemyHitPoints> ();
+		enemyHP.TakeDamage (attackDamage);
 	}
 }

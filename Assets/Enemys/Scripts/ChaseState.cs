@@ -12,10 +12,10 @@ public class ChaseState : iEnemyState
 
 	public override void StateUpdate ()
 	{
-        if (controller.target)
-            Chase();
-        else if (!controller.SearchForTargets())
-            ToPatrolState();
+		if (controller.target)
+			Chase ();
+		else
+			controller.SearchForTargets ();
 	}
 
     #region Methods
@@ -23,14 +23,11 @@ public class ChaseState : iEnemyState
     {
         controller.agent.Resume();
         controller.agent.SetDestination(controller.target.position);
+		controller.anim.SetBool ("Walking", true);
         controller.LookAtTarget();
 
-        float distance = Vector3.Distance(controller.transform.position, controller.target.position);
-
-        if (distance < controller.attackRange)
+		if (controller.DistanceToTarget() < controller.attackRange)
             ToAttackState();
-        if (distance > controller.sightRange)
-            ToPatrolState();
     }
 
     public override void OnTriggerEnter(Collider other)
@@ -49,7 +46,7 @@ public class ChaseState : iEnemyState
 
 	public override void ToChaseState()
 	{
-		Debug.LogWarning("Can't transition to same state");
+		controller.currentState = controller.chaseState;
 	}
 
 	public override void ToAttackState()

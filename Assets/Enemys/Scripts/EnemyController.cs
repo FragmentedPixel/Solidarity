@@ -15,7 +15,6 @@ public class EnemyController : MonoBehaviour
 
     #region Parameters
     [Header("Paramters")]
-    public float sightRange;
     public float attackRange;
     public float attackCooldown;
     public float attackDamage;
@@ -23,20 +22,24 @@ public class EnemyController : MonoBehaviour
     #endregion
 
     #region Globals
-    public Transform target;
-	public List<Transform> targets;
+	[HideInInspector] public Transform target;
+	[HideInInspector] public List<Transform> targets;
 	[HideInInspector] public NavMeshAgent agent;
+	[HideInInspector] public Animator anim;
 	#endregion
 
+	#region Initialzation
 	private void Awake()
 	{
         agent = GetComponent<NavMeshAgent>();
+		anim = GetComponentInChildren<Animator> ();
 
         patrolState = new PatrolState(this);
 		chaseState = new ChaseState(this);
 		
 		currentState = patrolState;
 	}
+	#endregion
 
 	private void Update ()
 	{
@@ -52,28 +55,30 @@ public class EnemyController : MonoBehaviour
 		if (troopHP != null && !targets.Contains(troopHP.transform))
 			targets.Add (troopHP.transform);
 	}
+
 	private void OnTriggerExit(Collider other)
 	{
-        TroopHitPoints troopHP = other.GetComponent<TroopHitPoints> ();
+		TroopHitPoints troopHP = other.GetComponent<TroopHitPoints> ();
 
-		if (troopHP != null) 
-			targets.Remove (troopHP.transform);
+		//if (other.transform == target)
+		//	target = null;
 	}
 	#endregion
 
 	#region Methods
 
-	public bool SearchForTargets()
+	public void SearchForTargets()
 	{
-		float newDistance = sightRange; //if the target is out of sight it won't be count as a target.
+		float newDistance = Mathf.Infinity;
 
         for (int i = 0; i < targets.Count; i++)
         {
-            if (targets[i] == null)
+            if (targets[i] == null) // if target died while still in range.
             {
                 targets.Remove(targets[i]);
                 i--;
             }
+
             else
             {
                 float distance = Vector3.Distance(targets[i].position, transform.position);
@@ -85,12 +90,33 @@ public class EnemyController : MonoBehaviour
             }
         }
 
-		return (target != null);
+		if (target == null)
+			currentState.ToPatrolState ();
+		else if (newDistance < attackRange)
+			currentState.ToAttackState ();
+		else
+			currentState.ToChaseState ();
 	}
+
 	public void LookAtTarget()
 	{
 		Vector3 lookPoint = new Vector3(target.position.x, transform.position.y, target.position.z);
 		transform.LookAt(lookPoint);
+	}
+
+	public float DistanceToTarget()
+	{
+		Vector3 transformPosition = new Vector3 (transform.position.x, 0f, transform.position.z);
+		Vector3 targetPosition = new Vector3 (target.position.x, 0f, target.position.z);
+
+		float distance = Vector3.Distance (transformPosition, targetPosition);
+		return distance;
+	}
+
+	private void OnDrawGizmosSelected()
+	{
+		Gizmos.color = Color.red;
+		Gizmos.DrawLine (transform.position, transform.position + transform.forward * attackRange);
 	}
 	#endregion
 }

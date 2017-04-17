@@ -15,20 +15,24 @@ public class TroopController : MonoBehaviour
 	#endregion
 
 	#region Parameters
+	[Header("Parameters")]
     public float fightRange;
 	public float fightCoolDown;
-    public float sightRange;
+	public float attackDamage;
 	#endregion
 
 	#region Globals
-    public Transform target;
-	public List<Transform> targets = new List<Transform>();
+	[Header("Testing")]
+	private bool battleStarted = false;
+	[HideInInspector] public Transform target;
+	[HideInInspector] public List<Transform> targets = new List<Transform>();
     
-	public NavMeshAgent agent;
-	public List<Vector3> wayPoints = new List<Vector3>();
+	[HideInInspector] public NavMeshAgent agent;
+	[HideInInspector] public Vector3 destination;
 	#endregion
 
-    private void Start()
+	#region Initialization
+    private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
 
@@ -37,7 +41,10 @@ public class TroopController : MonoBehaviour
         aggroState = new AggroState(this);
 
         currentState = idleState;
-    }
+
+		destination = FindObjectOfType<Castle> ().transform.position;
+	}
+	#endregion
 
     private void Update()
     {
@@ -58,22 +65,21 @@ public class TroopController : MonoBehaviour
 	private void OnTriggerExit(Collider other)
 	{
 		EnemyHitPoints enemyHP = other.transform.GetComponent<EnemyHitPoints> ();
-		if (enemyHP != null)
-			targets.Remove (enemyHP.transform);
+
+		//if (other.transform == target)
+		//	target = null;
 	}
 	#endregion
 
 	#region Methods
-
     public void StartBattle()
     {
-        // change currentstate to walkstate after the waypoints were set up.
+		battleStarted = true;
         currentState = walkState;
     }
-
-	public bool SearchForTargets()
+	public void SearchForTargets()
 	{
-		float minDistance = sightRange;
+		float minDistance = Mathf.Infinity;
 		for (int i = 0; i < targets.Count; i++) 
 		{
 			if (targets [i] == null) 
@@ -92,13 +98,37 @@ public class TroopController : MonoBehaviour
 			}
 		}
 
-		return (target != null);
+		if (target == null)
+			currentState.ToWalkState ();
+		else if (minDistance < fightRange)
+			currentState.ToFightState ();
+		else
+			currentState.ToAggroState ();
 	}
-
 	public void LookAtTarget()
 	{
 		Vector3 lookPoint = new Vector3 (target.position.x, transform.position.y, target.position.z);
 		transform.LookAt (lookPoint);
+	}
+	public void SetNewDestination(Vector3 newDestination)
+	{
+		destination = newDestination;
+
+		if(battleStarted)
+			currentState.ToWalkState ();
+	}
+	public float DistanceToTarget()
+	{
+		Vector3 transformPosition = new Vector3 (transform.position.x, 0f, transform.position.z);
+		Vector3 targetPosition = new Vector3 (target.position.x, 0f, target.position.z);
+
+		float distance = Vector3.Distance (transformPosition, targetPosition);
+		return distance;
+	}
+	private void OnDrawGizmosSelected()
+	{
+		Gizmos.color = Color.red;
+		Gizmos.DrawLine (transform.position, transform.position + transform.forward * fightRange);
 	}
 	#endregion
 }

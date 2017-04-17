@@ -12,7 +12,7 @@ public class WalkState : iTroopState
 
     public override void StateUpdate()
     {
-        Walk();
+        WalkToDestination();
     }
 
     #region Methods
@@ -22,32 +22,25 @@ public class WalkState : iTroopState
         if(enemyHP != null)
         {
             controller.target = enemyHP.transform;
-			float distance = Vector3.Distance (controller.transform.position, controller.target.position);
-			if (distance > controller.fightRange)
+
+			if (controller.DistanceToTarget() > controller.fightRange)
 				ToAggroState ();
 			else
 				ToFightState ();
         }
     }
-
-    private void Walk()
+    private void WalkToDestination()
     {
+		controller.agent.SetDestination (controller.destination);
 		controller.agent.Resume ();
-		controller.agent.SetDestination (controller.wayPoints[0]);
-        
-		if(controller.agent.remainingDistance < controller.agent.stoppingDistance && !controller.agent.pathPending)
-		{
-			controller.agent.Resume ();
-			controller.wayPoints.Remove (controller.wayPoints[0]);
 
-			if (controller.wayPoints.Count == 0)
-				ToIdleState ();
-        }
+		if (controller.agent.remainingDistance < controller.agent.stoppingDistance && !controller.agent.pathPending)
+			ToIdleState ();
     }
     #endregion
 
     #region Transitions
-	private void ToIdleState()
+	public override void ToIdleState()
 	{
 		controller.currentState = controller.idleState;
 	}
@@ -64,7 +57,7 @@ public class WalkState : iTroopState
 
     public override void ToWalkState()
     {
-        Debug.LogWarning("Can't transition to same state");
+		//Already in this state.
     }
     #endregion
 

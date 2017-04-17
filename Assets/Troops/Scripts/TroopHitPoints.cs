@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TroopHitPoints : MonoBehaviour
 {
+	public Transform hitTarget;
     public float hitPoints;
 
     public void TakeDamage(float damageToTake)
@@ -11,10 +12,10 @@ public class TroopHitPoints : MonoBehaviour
         hitPoints -= damageToTake;
 
         if (hitPoints <= 0f)
-            Destroy(gameObject);
+			Destroy(transform.parent.gameObject);
     }
 
-    private void OnCollisionEnter(Collision other)
+	private void OnTriggerEnter(Collider other)
     {
         EnemyProjectile proj = other.transform.GetComponent<EnemyProjectile>();
 

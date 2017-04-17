@@ -13,6 +13,7 @@ public class RangedFightState : FightState
 
 	public override void Fight()
 	{
-		Debug.Log("Play Enemy melee attack animation");
+		Debug.Log("Play Enemy ranged attack animation");
 		rangedController.ShootProjectile();
-	}}
+	}
+}

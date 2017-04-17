@@ -16,6 +16,7 @@ public class EnemyRangedController : EnemyController
     public void ShootProjectile()
     {
         GameObject proj = Instantiate(projectile, muzzle.position, muzzle.rotation);
-        proj.GetComponent<EnemyProjectile>().SetTarget(attackDamage, target);
+		TroopHitPoints troopHP = target.GetComponentInChildren<TroopHitPoints> ();
+		proj.GetComponent<EnemyProjectile>().SetTarget(attackDamage, troopHP.hitTarget);
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PatrolState : iEnemyState
 {
-	private int index = -1;
+	private int index = 0;
 
 	public PatrolState(EnemyController enemyController) : base(enemyController)
 	{
@@ -20,28 +20,37 @@ public class PatrolState : iEnemyState
 
     public override void OnTriggerEnter(Collider other)
     {
-        if(other.GetComponent<TroopController>() != null)
+		if(other.GetComponent<TroopHitPoints>() != null)
         {
             controller.target = other.transform;
-			float distance = Vector3.Distance (controller.transform.position, controller.target.position);
 
-			if (distance < controller.attackRange)
+			if (controller.DistanceToTarget() < controller.attackRange)
 				ToAttackState ();
-			else if(distance < controller.sightRange)
+			else
 				ToChaseState ();
         }
     }
 
     private void Patrol ()
 	{
+		CheckCurrentDestionation ();
         controller.agent.Resume();
-		//TODO: Opreste-l din a merge pana la pozitia fostului target.
+		controller.anim.SetBool ("Walking", true);
 
 		if (controller.agent.remainingDistance <= controller.agent.stoppingDistance && !controller.agent.pathPending) 
 		{
 			index = (index + 1) % controller.wayPointsParent.childCount; 
 			controller.agent.SetDestination(controller.wayPointsParent.GetChild(index).position);
 		}
+	}
+
+	private void CheckCurrentDestionation()
+	{
+		foreach (Transform tran in controller.wayPointsParent)
+			if (controller.agent.destination == tran.position)
+				return;
+
+		controller.agent.SetDestination (controller.wayPointsParent.GetChild (index).position);
 	}
     #endregion
 

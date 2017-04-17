@@ -6,5 +6,4 @@ public class TroopInfo : MonoBehaviour
 {
     public Sprite sprite;
     public int count;
-
 }

@@ -11,10 +11,10 @@ public class AggroState : iTroopState
 
     public override void StateUpdate()
     {
-		if (controller.target)
+		if (controller.target != null)
 			Aggro ();
-		else if (!controller.SearchForTargets ())
-			ToWalkState ();
+		else
+			controller.SearchForTargets ();
     }
 
     #region Methods
@@ -25,18 +25,21 @@ public class AggroState : iTroopState
 
     private void Aggro()
     {
+		controller.agent.SetDestination(controller.target.position);
 		controller.agent.Resume ();
-        controller.agent.SetDestination(controller.target.position);
+		controller.LookAtTarget ();
 
-		float distance = Vector3.Distance(controller.transform.position, controller.target.position);
-		if (distance > controller.sightRange)
-			ToWalkState();
-		if (distance < controller.fightRange)
+		if (controller.DistanceToTarget() < controller.fightRange)
 			ToFightState();
     }
     #endregion
 
     #region Transitions
+	public override void ToIdleState()
+	{
+		controller.currentState = controller.idleState;
+	}
+
     public override void ToFightState()
     {
         controller.currentState = controller.fightState;
@@ -44,7 +47,7 @@ public class AggroState : iTroopState
 
     public override void ToAggroState()
     {
-        Debug.LogWarning("Can't transition to same state");
+		controller.currentState = controller.aggroState;
     }
 
     public override void ToWalkState()

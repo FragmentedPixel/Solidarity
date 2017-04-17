@@ -11,7 +11,8 @@ public class EnemyMeleeController : EnemyController
 
     public void DealDamage()
     {
-        TroopHitPoints troopHitPoints = target.GetComponent<TroopHitPoints>();
+		anim.SetTrigger ("Melee Attack");
+		TroopHitPoints troopHitPoints = target.GetComponentInChildren<TroopHitPoints>();
         troopHitPoints.TakeDamage(attackDamage);
     }
 }

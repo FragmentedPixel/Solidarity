@@ -14,6 +14,7 @@ public abstract class iTroopState
     public abstract void StateUpdate();
     public abstract void OnTriggerEnter(Collider other);
     
+	public abstract void ToIdleState();
     public abstract void ToWalkState();
     public abstract void ToAggroState();
     public abstract void ToFightState();

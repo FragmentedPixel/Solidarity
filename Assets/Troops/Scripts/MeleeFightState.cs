@@ -13,7 +13,7 @@ public class MeleeFightState : FightState
 
 	public override void Fight()
 	{
-		Debug.Log("Play Enemy melee attack animation");
+		Debug.Log("Play Player melee attack animation");
 		meleeController.DealDamage();
 	}
 }

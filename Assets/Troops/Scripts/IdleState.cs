@@ -12,8 +12,7 @@ public class IdleState : iTroopState
 
     public override void StateUpdate()
     {
-		if (controller.wayPoints.Count > 0)
-			ToWalkState ();
+		
     }
 
     #region Methods
@@ -23,8 +22,8 @@ public class IdleState : iTroopState
 		if (enemyHP != null) 
 		{
 			controller.target = enemyHP.transform;
-			float distance = Vector3.Distance (controller.transform.position, controller.target.position);
-			if (distance > controller.fightRange)
+
+			if (controller.DistanceToTarget() > controller.fightRange)
 				ToAggroState ();
 			else
 				ToFightState ();
@@ -33,19 +32,24 @@ public class IdleState : iTroopState
     #endregion
 
     #region Transitions
+	public override void ToIdleState()
+	{
+		controller.currentState = controller.idleState;
+	}
+
     public override void ToFightState()
     {
-        
+		controller.currentState = controller.fightState;
     }
 
     public override void ToAggroState()
     {
-
+		controller.currentState = controller.aggroState;
     }
 
     public override void ToWalkState()
     {
-
+		controller.currentState = controller.walkState;
     }
     #endregion
 

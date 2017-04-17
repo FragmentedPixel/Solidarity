@@ -7,6 +7,7 @@ public class TroopCard : MonoBehaviour
 
     private Image troopImage;
     private Text troopCount;
+	private TroopInfo troopInfo;
 
     private void Awake()
     {
@@ -23,7 +24,7 @@ public class TroopCard : MonoBehaviour
         troopCount.enabled = true;
 
         troopPrefab = newTroop;
-        TroopInfo troopInfo = newTroop.GetComponent<TroopInfo>();
+        troopInfo = newTroop.GetComponent<TroopInfo>();
 
         troopImage.sprite = troopInfo.sprite;
         troopCount.text = troopInfo.count.ToString();
@@ -36,9 +37,10 @@ public class TroopCard : MonoBehaviour
         troopCount.enabled = false;
 
         Transform troopsParent = FindObjectOfType<TroopsManager>().transform;
-
-        Instantiate(troopPrefab, position, Quaternion.identity, troopsParent);
-        troopPrefab = null;
+		for (int i = 0; i < troopInfo.count; i++) 	
+			Instantiate (troopPrefab, position + Random.insideUnitSphere, Quaternion.identity, troopsParent);
+		
+		troopPrefab = null;
     }
 
 }

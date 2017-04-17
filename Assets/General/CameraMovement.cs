@@ -4,37 +4,35 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour 
 {
-	public float cameraSpeed = 5f;
-	public int boundsLimit = 100;
+	public float panSpeed = 20f;
+	public float zoomSpeed = 100f;
 
-	private int screenWidth;
-	private int screenHeight;
+	[Header("Clamping")]
+	public Vector2 clamp;
+	public float minY, maxY;
 
-	private Vector3 offset;
 
-	void Start () 
+	private void Update()
 	{
-		screenHeight = Screen.height;
-		screenWidth = Screen.width;
+		if(Input.GetAxis("Vertical") != 0f || Input.GetAxis("Horizontal") != 0f || Input.GetAxis("Mouse ScrollWheel") != 0f)
+			MoveCamera();	
 	}
 
-	void LateUpdate () 
+	private void MoveCamera()
 	{
-		CheckBounds();
-	}
+		float x = Input.GetAxis ("Vertical");
+		float y = Input.GetAxis ("Mouse ScrollWheel");
+		float z = Input.GetAxis ("Horizontal");
 
-	private void CheckBounds()
-	{
-		if (Input.mousePosition.x > screenWidth - boundsLimit)
-			transform.position -= new Vector3 (0, 0, cameraSpeed * Time.deltaTime);
+		x = Mathf.Clamp (x, -clamp.x, clamp.x);
+		y = Mathf.Clamp (y, minY, maxY);
+		z = Mathf.Clamp (z, -clamp.y, clamp.y);
 
-		if (Input.mousePosition.x < 0 + boundsLimit)
-			transform.position += new Vector3 (0, 0, cameraSpeed * Time.deltaTime);
+		Vector3 pos = Vector3.zero;
+		pos.x += panSpeed * x * Time.deltaTime;
+		pos.y += zoomSpeed * y * Time.deltaTime;
+		pos.z += panSpeed * z * Time.deltaTime;
 
-		if (Input.mousePosition.y > screenHeight - boundsLimit)
-			transform.position += new Vector3 (cameraSpeed * Time.deltaTime, 0, 0);
-
-		if (Input.mousePosition.y < 0 + boundsLimit)
-			transform.position -= new Vector3 (cameraSpeed * Time.deltaTime, 0, 0);
+		transform.position += pos;
 	}
 }

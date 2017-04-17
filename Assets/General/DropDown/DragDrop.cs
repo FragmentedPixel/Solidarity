@@ -54,8 +54,9 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit rayHit;
 
-        if (Physics.Raycast(ray, out rayHit) && rayHit.collider.CompareTag("Terrain") && !EventSystem.current.IsPointerOverGameObject())
-            return rayHit.point;
+		if (Physics.Raycast (ray, out rayHit) && rayHit.collider.CompareTag ("Terrain") && !EventSystem.current.IsPointerOverGameObject ())
+			return rayHit.point;
+		
 
         return -Vector3.one;
     }

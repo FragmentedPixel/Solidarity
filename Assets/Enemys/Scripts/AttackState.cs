@@ -6,28 +6,28 @@ using UnityEngine;
 public abstract class AttackState : iEnemyState
 {
     float currentTime = 0f;
-
+	#region Initialzation
     public AttackState(EnemyController enemyController) : base(enemyController)
     {
 
     }
+	#endregion
 
     public override void StateUpdate()
     {
-        if (controller.target)
-            FightTarget();
-        else if (controller.SearchForTargets())
-            ToChaseState();
-        else
-            ToPatrolState();
+		if (controller.target)
+			AttackTarget ();
+		else
+			controller.SearchForTargets ();
     }
 
     #region Methods
     public abstract void Attack();
 
-    public void FightTarget()
+    public void AttackTarget()
     {
         controller.agent.Stop();
+		controller.anim.SetBool ("Walking", false);
         controller.LookAtTarget();
 
         if (currentTime > controller.attackCooldown)
@@ -38,11 +38,7 @@ public abstract class AttackState : iEnemyState
         else
             currentTime += Time.deltaTime;
 
-        float distance = Vector3.Distance(controller.transform.position, controller.target.position);
-
-        if (distance > controller.sightRange)
-            ToPatrolState();
-        else if (distance > controller.attackRange)
+		if (controller.DistanceToTarget() > controller.attackRange)
             ToChaseState();
     }
 
@@ -51,7 +47,6 @@ public abstract class AttackState : iEnemyState
 
     }    
     #endregion
-
 
     #region Trnasitions
 
@@ -67,7 +62,7 @@ public abstract class AttackState : iEnemyState
 
 	public override void ToAttackState()
 	{
-		Debug.LogWarning("Can't transition to same state");
+		controller.currentState = controller.attackState;
 	}
 
 	#endregion

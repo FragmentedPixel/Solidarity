@@ -5,10 +5,9 @@ using UnityEngine;
 public class EnemyProjectile : MonoBehaviour
 {
     public float speed;
-    public float damage;
+	[HideInInspector] public float damage;
 
     private Transform target;
-
 
     public void SetTarget(float projDamage, Transform projTarget)
     {

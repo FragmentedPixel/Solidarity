@@ -15,10 +15,8 @@ public abstract class FightState : iTroopState
     {
 		if (controller.target)
 			FightTarget ();
-		else if (controller.SearchForTargets ())
-			ToAggroState ();
 		else
-			ToWalkState ();
+			controller.SearchForTargets ();
     }
 
     #region Methods
@@ -34,26 +32,30 @@ public abstract class FightState : iTroopState
         controller.agent.Stop();
 		controller.LookAtTarget ();
 
-		if (currentTime > controller.fightCoolDown) {
+		if (currentTime > controller.fightCoolDown) 
+		{
 			Fight ();
 			currentTime = 0f;
-		} else
+		} 
+		else
 			currentTime += Time.deltaTime;
 
-		float distance = Vector3.Distance(controller.transform.position, controller.target.position);
-
-		if (distance > controller.sightRange)
-			ToWalkState();
-		else if (distance > controller.fightRange)
+		if (controller.DistanceToTarget() > controller.fightRange)
 			ToAggroState();
     }
     
     #endregion
 
     #region Transitions
+	public override void ToIdleState()
+	{
+		controller.currentState = controller.idleState;
+	}
+
     public override void ToFightState()
     {
-        Debug.LogWarning("Can't transition to same state");
+        
+		controller.currentState = controller.fightState;
     }
 
     public override void ToAggroState()
