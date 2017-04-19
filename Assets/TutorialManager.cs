@@ -9,7 +9,7 @@ public class TutorialManager : MonoBehaviour
 	public Text tutorialText;
 	public Canvas playerCanvas;
 
-	private int index = -1;
+	private int index = 0;
 	private bool writing;
 
 	private void Start()
@@ -27,8 +27,7 @@ public class TutorialManager : MonoBehaviour
 
 	private void PlaceNewLine()
 	{
-		index++;
-		if (index != lines.Length)
+		if (index < lines.Length)
 			StartCoroutine (WriteLineCR (lines[index]));
 		else 
 		{
@@ -36,6 +35,8 @@ public class TutorialManager : MonoBehaviour
 			playerCanvas.enabled = true;
 			Time.timeScale = 1f;
 		}
+
+		index++;
 	}
 
 	private IEnumerator WriteLineCR(string newText)

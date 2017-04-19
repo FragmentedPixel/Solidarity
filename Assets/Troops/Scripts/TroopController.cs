@@ -130,5 +130,13 @@ public class TroopController : MonoBehaviour
 		Gizmos.color = Color.red;
 		Gizmos.DrawLine (transform.position, transform.position + transform.forward * fightRange);
 	}
+	public void Fall()
+	{
+		agent.enabled = false;
+		Rigidbody rb = GetComponent<Rigidbody> ();
+		rb.isKinematic = false;
+		rb.useGravity = true;
+		Destroy (this);
+	}
 	#endregion
 }
