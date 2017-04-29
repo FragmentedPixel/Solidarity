@@ -5,6 +5,7 @@ using UnityEngine;
 public class BridgeTrap : MonoBehaviour 
 {
 	public GameObject obstacle;
+	public Rigidbody podRb;
 
 	List<TroopHitPoints> troopsCaught = new List<TroopHitPoints>();
 
@@ -24,7 +25,7 @@ public class BridgeTrap : MonoBehaviour
 
 	private void Update()
 	{
-		if (troopsCaught.Count > 3)
+		if (troopsCaught.Count >= 2)
 			Trap ();
 	}
 
@@ -34,7 +35,7 @@ public class BridgeTrap : MonoBehaviour
 		{
 			troop.transform.parent.GetComponent<TroopController> ().Fall ();
 		}
-
+		podRb.useGravity = true;
 		obstacle.SetActive (true);
 		Destroy (this);
 	}
