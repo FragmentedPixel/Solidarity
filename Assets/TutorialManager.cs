@@ -9,11 +9,14 @@ public class TutorialManager : MonoBehaviour
 	public Text tutorialText;
 	public Canvas playerCanvas;
 
+    private Canvas tutorialCanvas;
 	private int index = 0;
 	private bool writing;
 
 	private void Start()
 	{
+        tutorialCanvas = GetComponent<Canvas>();
+        tutorialCanvas.enabled = true;
 		playerCanvas.enabled = false;
 		Time.timeScale = 1f;
 		PlaceNewLine ();
@@ -31,7 +34,7 @@ public class TutorialManager : MonoBehaviour
 			StartCoroutine (WriteLineCR (lines[index]));
 		else 
 		{
-			GetComponent<Canvas> ().enabled = false;
+			tutorialCanvas.enabled = false;
 			playerCanvas.enabled = true;
 			Time.timeScale = 1f;
 		}

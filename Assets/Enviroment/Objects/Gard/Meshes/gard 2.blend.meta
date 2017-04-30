@@ -1,15 +1,40 @@
 fileFormatVersion: 2
-guid: a3aa84c2cacaabf44a22afc4e8fce077
-timeCreated: 1492367825
+guid: b826fabcb69e9ff4b9e52f73098ba39a
+timeCreated: 1493445745
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: //RootNode
-    400000: //RootNode
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: Cylinder
+    100000: Cube_000
+    100002: Cube_001
+    100004: Cube_002
+    100006: Cube_003
+    100008: Cube_004
+    100010: //RootNode
+    400000: Cube_000
+    400002: Cube_001
+    400004: Cube_002
+    400006: Cube_003
+    400008: Cube_004
+    400010: //RootNode
+    2300000: Cube_000
+    2300002: Cube_001
+    2300004: Cube_002
+    2300006: Cube_003
+    2300008: Cube_004
+    2300010: //RootNode
+    3300000: Cube_000
+    3300002: Cube_001
+    3300004: Cube_002
+    3300006: Cube_003
+    3300008: Cube_004
+    3300010: //RootNode
+    4300000: Cube_000
+    4300002: Cube_004
+    4300004: Cube_003
+    4300006: Cube_002
+    4300008: Cube_001
+    4300010: gard
     7400000: Default Take
     9500000: //RootNode
   materials:

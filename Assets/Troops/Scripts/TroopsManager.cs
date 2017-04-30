@@ -57,6 +57,8 @@ public class TroopsManager : MonoBehaviour
 	}
 	private void ShowTroopsPath()
 	{
+        //TODO: Remove this
+        return;
 		foreach (Transform trans in transform) 
 		{
 			TroopController controller =  trans.GetComponent<TroopController> ();

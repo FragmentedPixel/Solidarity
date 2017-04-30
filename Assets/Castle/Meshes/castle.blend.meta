@@ -1,15 +1,22 @@
 fileFormatVersion: 2
-guid: a3aa84c2cacaabf44a22afc4e8fce077
-timeCreated: 1492367825
+guid: 8a308ba88be352c48af9208082e865b8
+timeCreated: 1493536050
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
+    100002: Cube
+    100004: Cylinder
     400000: //RootNode
-    2300000: //RootNode
-    3300000: //RootNode
+    400002: Cube
+    400004: Cylinder
+    2300000: Cube
+    2300002: Cylinder
+    3300000: Cube
+    3300002: Cylinder
     4300000: Cylinder
+    4300002: Cube
     7400000: Default Take
     9500000: //RootNode
   materials:
@@ -41,7 +48,7 @@ ModelImporter:
     addColliders: 0
     importBlendShapes: 1
     swapUVChannels: 0
-    generateSecondaryUV: 1
+    generateSecondaryUV: 0
     useFileUnits: 1
     optimizeMeshForGPU: 1
     keepQuads: 0
