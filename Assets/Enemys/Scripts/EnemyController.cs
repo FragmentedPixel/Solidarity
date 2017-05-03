@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+[RequireComponent(typeof(Unit))]
 public class EnemyController : MonoBehaviour
 {
     #region States
@@ -24,14 +25,14 @@ public class EnemyController : MonoBehaviour
     #region Globals
 	[HideInInspector] public Transform target;
 	[HideInInspector] public List<Transform> targets;
-	[HideInInspector] public NavMeshAgent agent;
+	[HideInInspector] public Unit agent;
 	[HideInInspector] public Animator anim;
 	#endregion
 
 	#region Initialzation
 	private void Awake()
 	{
-        agent = GetComponent<NavMeshAgent>();
+        agent = GetComponent<Unit>();
 		anim = GetComponentInChildren<Animator> ();
 
         patrolState = new PatrolState(this);

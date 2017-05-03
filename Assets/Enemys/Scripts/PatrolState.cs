@@ -34,23 +34,23 @@ public class PatrolState : iEnemyState
     private void Patrol ()
 	{
 		CheckCurrentDestionation ();
-        controller.agent.Resume();
+        //controller.agent.Resume();
 		controller.anim.SetBool ("Walking", true);
 
-		if (controller.agent.remainingDistance <= controller.agent.stoppingDistance && !controller.agent.pathPending) 
+		if (controller.agent.ReachedDestination) 
 		{
 			index = (index + 1) % controller.wayPointsParent.childCount; 
-			controller.agent.SetDestination(controller.wayPointsParent.GetChild(index).position);
+			controller.agent.SetDestination(controller.wayPointsParent.GetChild(index));
 		}
 	}
 
 	private void CheckCurrentDestionation()
 	{
 		foreach (Transform tran in controller.wayPointsParent)
-			if (controller.agent.destination == tran.position)
+			if (controller.agent == tran)
 				return;
 
-		controller.agent.SetDestination (controller.wayPointsParent.GetChild (index).position);
+		controller.agent.SetDestination (controller.wayPointsParent.GetChild (index));
 	}
     #endregion
 
