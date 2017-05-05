@@ -8,6 +8,7 @@ public class aGrid : MonoBehaviour
     #region GridSize
     public Vector2 gridWorldSize;
     public float nodeRadius;
+    public int MaxSize { get { return gridSizeX * gridSizeY; } }
     #endregion
 
     #region LayerMasks
@@ -15,6 +16,7 @@ public class aGrid : MonoBehaviour
     #endregion
 
     #region Grid
+    public bool displayGizmos;
     aNode[,] grid;
 
     float nodeDiameter;
@@ -23,7 +25,7 @@ public class aGrid : MonoBehaviour
     #endregion
 
     #region Initialisation
-    private void Start()
+    private void Awake()
     {
         CreateGrid();
     }
@@ -97,14 +99,13 @@ public class aGrid : MonoBehaviour
     {
         Gizmos.DrawCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
 
-        if(grid != null)
-        {
-            foreach(aNode n in grid)
-            {
+        if (!displayGizmos || grid == null)
+            return;
 
-                Gizmos.color = n.walkable ? Color.white : Color.red;
-                Gizmos.DrawCube(n.position, Vector3.one * (nodeDiameter - .1f));
-            }
+        foreach(aNode n in grid)
+        {
+            Gizmos.color = n.walkable ? Color.white : Color.red;
+            Gizmos.DrawCube(n.position, Vector3.one * (nodeDiameter - .1f));
         }
     }
     #endregion
