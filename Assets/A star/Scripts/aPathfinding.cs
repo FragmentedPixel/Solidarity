@@ -7,33 +7,28 @@ public class aPathfinding : MonoBehaviour
 {
     #region Variabiles
     private aGrid grid;
-    private aPathRequestManager requestManager;
     #endregion
 
     #region Initialization
     private void Awake()
     {
         grid = GetComponent<aGrid>();
-        requestManager = GetComponent<aPathRequestManager>();
     }
     #endregion
 
     #region Methods
-    public void StartFindPath(Vector3 startPos, Vector3 targetPos)
-    {
-        StartCoroutine(FindPath(startPos, targetPos));
-    }
+    
 
     #endregion
 
     #region Utility
-    private IEnumerator FindPath(Vector3 startPosition, Vector3 targetPosition)
+    public void FindPath(aPathRequest request, Action<PathResult> callback)
     {
         Vector3[] wayPoints = new Vector3[0];
         bool pathSuccess = false;
 
-        aNode startNode = grid.NodeFromWorldPoint(startPosition);
-        aNode targetNode = grid.NodeFromWorldPoint(targetPosition);
+        aNode startNode = grid.NodeFromWorldPoint(request.pathStart);
+        aNode targetNode = grid.NodeFromWorldPoint(request.pathEnd);
 
         if (startNode.walkable && targetNode.walkable)
         {
@@ -74,13 +69,12 @@ public class aPathfinding : MonoBehaviour
                 }
             }
         }
-        yield return null;
 
         if (pathSuccess)
             wayPoints = RetracePath(startNode, targetNode);
-        
-        
-        requestManager.FinishedProcessingPath(wayPoints, pathSuccess);
+
+        pathSuccess = wayPoints.Length > 0;
+        callback(new PathResult(wayPoints, pathSuccess, request.callback));
 
     }
 

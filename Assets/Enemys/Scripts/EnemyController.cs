@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(Unit))]
+[RequireComponent(typeof(aAgent))]
 public class EnemyController : MonoBehaviour
 {
     #region States
@@ -25,14 +25,14 @@ public class EnemyController : MonoBehaviour
     #region Globals
 	[HideInInspector] public Transform target;
 	[HideInInspector] public List<Transform> targets;
-	[HideInInspector] public Unit agent;
+	[HideInInspector] public aAgent agent;
 	[HideInInspector] public Animator anim;
 	#endregion
 
 	#region Initialzation
 	private void Awake()
 	{
-        agent = GetComponent<Unit>();
+        agent = GetComponent<aAgent>();
 		anim = GetComponentInChildren<Animator> ();
 
         patrolState = new PatrolState(this);
