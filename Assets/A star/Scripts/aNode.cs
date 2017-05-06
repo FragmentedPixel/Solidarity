@@ -7,6 +7,7 @@ public class aNode : IComparable<aNode>
 {
     #region Properties
     public bool walkable;
+    public int movementPenality;
     public Vector3 position;
 
     public int gridX;
@@ -24,13 +25,15 @@ public class aNode : IComparable<aNode>
     #endregion
 
     #region Constructor
-    public aNode(bool _walkable, Vector3 _position, int _gridX, int _gridY)
+    public aNode(bool _walkable, Vector3 _position, int _gridX, int _gridY, int _penalty)
     {
         walkable = _walkable;
         position = _position;
 
         gridX = _gridX;
         gridY = _gridY;
+
+        movementPenality = _penalty;
     }
     #endregion
 

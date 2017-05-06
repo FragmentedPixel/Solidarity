@@ -59,12 +59,13 @@ public class aPathfinding : MonoBehaviour
                     if (!neighbour.walkable || closedSet.Contains(neighbour))
                         continue;
 
-                    int newMovementCost = currentNode.gCost + GetDistance(currentNode, neighbour);
+                    int newMovementCost = currentNode.gCost + GetDistance(currentNode, neighbour) + neighbour.movementPenality;
                     if (newMovementCost < neighbour.gCost || !openSet.Contains(neighbour))
                     {
                         neighbour.gCost = newMovementCost;
                         neighbour.hCost = GetDistance(neighbour, targetNode);
                         neighbour.parent = currentNode;
+
                         if (!openSet.Contains(neighbour))
                             openSet.Add(neighbour);
                         else
@@ -74,9 +75,11 @@ public class aPathfinding : MonoBehaviour
             }
         }
         yield return null;
+
         if (pathSuccess)
             wayPoints = RetracePath(startNode, targetNode);
-
+        
+        
         requestManager.FinishedProcessingPath(wayPoints, pathSuccess);
 
     }
@@ -96,14 +99,13 @@ public class aPathfinding : MonoBehaviour
         List<aNode> path = new List<aNode>();
         aNode currentNode = targetNode;
 
-        while(currentNode != startNode)
+        while (currentNode != startNode)
         {
             path.Add(currentNode);
             currentNode = currentNode.parent;
         }
         Vector3[] waypoints = SimplifyPath(path);
         Array.Reverse(waypoints);
-
         return waypoints;
 
     }
