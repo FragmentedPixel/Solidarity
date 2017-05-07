@@ -4,36 +4,9 @@ using UnityEngine;
 
 public class TroopsManager : MonoBehaviour
 {
-	public float radius;
 	public GameObject destinationIndicator;
 
-	private LineRenderer lineRenderer;
-	private List<TroopController> troops = new List<TroopController>();
-
-	private bool showPath;
-	private Vector3 initDestinationPosition;
-
-	private void Start()
-	{
-		initDestinationPosition = destinationIndicator.transform.position;
-	}
-
-	private void Update()
-	{
-		HideShowPaths ();
-		RePathing ();
-	}
-
 	#region Compact
-
-	private void HideShowPaths()
-	{
-		if (Input.GetKeyDown (KeyCode.Space))
-			showPath = !showPath;
-
-		if (showPath)
-			ShowTroopsPath ();
-	}
 
 	private void RePathing()
 	{
@@ -55,21 +28,8 @@ public class TroopsManager : MonoBehaviour
 			t.GetComponent<TroopController>().StartBattle();
 		}
 	}
-	private void ShowTroopsPath()
-	{
-        //TODO: Remove this
-        return;
-		foreach (Transform trans in transform) 
-		{
-			TroopController controller =  trans.GetComponent<TroopController> ();
 
-			lineRenderer.numPositions = controller.agent.path.corners.Length;
-
-			for (int i = 0; i < lineRenderer.numPositions; i++)
-				lineRenderer.SetPosition (i, controller.agent.path.corners [i]);
-		}
-	}
-	public void MoveIndicator()
+    public void MoveIndicator()
 	{
 		Vector3? position = MouseRay ();
 		if (position == null)
@@ -96,13 +56,7 @@ public class TroopsManager : MonoBehaviour
 	}
 	public void SendTroops()
 	{
-		Vector3? position = MouseRay ();
-		destinationIndicator.transform.position = initDestinationPosition;
-		if (position == null)
-			return;
-
-		foreach (TroopController troop in troops)
-			troop.SetNewDestination (position.Value);
+		
 	}
 	#endregion
 

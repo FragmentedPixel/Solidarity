@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class aAgent : MonoBehaviour
 {
+    #region Paramters
     public Transform target;
     public float speed;
     public float turnSpeed;
@@ -11,6 +12,8 @@ public class aAgent : MonoBehaviour
     public float stoppingDistance;
 
     private aPath path;
+    private bool followingPath;
+    #endregion
 
     private void Start()
     {
@@ -30,7 +33,7 @@ public class aAgent : MonoBehaviour
 
     private IEnumerator FollowPathCR()
     {
-        bool followingPath = true;
+        followingPath = true;
         int pathIndex = 0;
 
         transform.LookAt(path.lookPoints[0]);
@@ -61,15 +64,18 @@ public class aAgent : MonoBehaviour
             }*/
 
             //While following path
-            if(pathIndex >= path.slowDownIndex && stoppingDistance > 0)
-                speedPercent = Mathf.Clamp01(path.turnBoundaries[path.finishedLineIndex].DistanceFromPoint(pos2D) / stoppingDistance);
+            if (followingPath)
+            {
+                if (pathIndex >= path.slowDownIndex && stoppingDistance > 0)
+                    speedPercent = Mathf.Clamp01(path.turnBoundaries[path.finishedLineIndex].DistanceFromPoint(pos2D) / stoppingDistance);
 
-            if (speedPercent < .01f)
-                followingPath = false;
+                if (speedPercent < .01f)
+                    followingPath = false;
 
-            Quaternion targetRot = Quaternion.LookRotation(path.lookPoints[pathIndex] - transform.position);
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, Time.deltaTime * turnSpeed);
-            transform.Translate(Vector3.forward * Time.deltaTime * speed * speedPercent, Space.Self);
+                Quaternion targetRot = Quaternion.LookRotation(path.lookPoints[pathIndex] - transform.position);
+                transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, Time.deltaTime * turnSpeed);
+                transform.Translate(Vector3.forward * Time.deltaTime * speed * speedPercent, Space.Self);
+            }
 
             yield return null; 
         }
@@ -108,7 +114,13 @@ public class aAgent : MonoBehaviour
 
     public void SetDestination(Transform t)
     {
-
+        target = t;
     }
-    public bool ReachedDestination { get; set; }
+
+    public bool ReachedDestination { get { return !followingPath; } }
+
+    public void Stop()
+    {
+        followingPath = false;
+    }
 }

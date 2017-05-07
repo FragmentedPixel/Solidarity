@@ -32,9 +32,8 @@ public class WalkState : iTroopState
     private void WalkToDestination()
     {
 		controller.agent.SetDestination (controller.destination);
-		controller.agent.Resume ();
 
-		if (controller.agent.remainingDistance < controller.agent.stoppingDistance && !controller.agent.pathPending)
+		if (controller.agent.ReachedDestination)
 			ToIdleState ();
     }
     #endregion

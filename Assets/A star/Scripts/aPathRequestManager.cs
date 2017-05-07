@@ -10,7 +10,7 @@ public class aPathRequestManager : MonoBehaviour
     private static aPathRequestManager instance;
     private aPathfinding pathfinding;
 
-    Queue<PathResult> results = new Queue<PathResult>();
+    Queue<aPathResult> results = new Queue<aPathResult>();
     #endregion
 
     #region Initialization
@@ -21,6 +21,7 @@ public class aPathRequestManager : MonoBehaviour
     }
     #endregion
 
+    #region Managing Queue
     private void Update()
     {
         if (results.Count > 0)
@@ -30,28 +31,32 @@ public class aPathRequestManager : MonoBehaviour
             {
                 for(int i = 0; i < itmsInQueue; i++)
                 {
-                    PathResult result = results.Dequeue();
+                    aPathResult result = results.Dequeue();
                     result.callback(result.path, result.succes);
                 }
             }
         }
     }
+    #endregion
 
+    #region Manging new requests
     public static void RequestPath(aPathRequest request)
     {
         ThreadStart threadStart = delegate { instance.pathfinding.FindPath(request, instance.FinishedProcessingPath); };
         threadStart.Invoke();
     }
+    #endregion
 
-    public void FinishedProcessingPath(PathResult result)
+    #region Finishing Process
+    public void FinishedProcessingPath(aPathResult result)
     {
         lock (results)
         {
             results.Enqueue(result);
         }
     }
+    #endregion
 
-    
 }
 
 public struct aPathRequest
@@ -68,13 +73,13 @@ public struct aPathRequest
     }
 }
 
-public struct PathResult
+public struct aPathResult
 {
     public Vector3[] path;
     public bool succes;
     public Action<Vector3[], bool> callback;
 
-    public PathResult(Vector3[] _path, bool _success, Action<Vector3[], bool> _callback)
+    public aPathResult(Vector3[] _path, bool _success, Action<Vector3[], bool> _callback)
     {
         path = _path;
         succes = _success;

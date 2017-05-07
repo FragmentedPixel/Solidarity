@@ -16,13 +16,8 @@ public class aPathfinding : MonoBehaviour
     }
     #endregion
 
-    #region Methods
-    
-
-    #endregion
-
     #region Utility
-    public void FindPath(aPathRequest request, Action<PathResult> callback)
+    public void FindPath(aPathRequest request, Action<aPathResult> callback)
     {
         Vector3[] wayPoints = new Vector3[0];
         bool pathSuccess = false;
@@ -74,7 +69,7 @@ public class aPathfinding : MonoBehaviour
             wayPoints = RetracePath(startNode, targetNode);
 
         pathSuccess = wayPoints.Length > 0;
-        callback(new PathResult(wayPoints, pathSuccess, request.callback));
+        callback(new aPathResult(wayPoints, pathSuccess, request.callback));
 
     }
 

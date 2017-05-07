@@ -27,14 +27,14 @@ public class TroopController : MonoBehaviour
 	[HideInInspector] public Transform target;
 	[HideInInspector] public List<Transform> targets = new List<Transform>();
     
-	[HideInInspector] public NavMeshAgent agent;
-	[HideInInspector] public Vector3 destination;
+	[HideInInspector] public aAgent agent;
+    [HideInInspector] public Transform destination;
 	#endregion
 
 	#region Initialization
     private void Awake()
     {
-        agent = GetComponent<NavMeshAgent>();
+        agent = GetComponent<aAgent>();
 
         idleState = new IdleState(this);
         walkState = new WalkState(this);
@@ -42,7 +42,7 @@ public class TroopController : MonoBehaviour
 
         currentState = idleState;
 
-		destination = FindObjectOfType<Castle> ().transform.position;
+		destination = FindObjectOfType<Castle> ().transform;
 	}
 	#endregion
 
@@ -110,7 +110,7 @@ public class TroopController : MonoBehaviour
 		Vector3 lookPoint = new Vector3 (target.position.x, transform.position.y, target.position.z);
 		transform.LookAt (lookPoint);
 	}
-	public void SetNewDestination(Vector3 newDestination)
+	public void SetNewDestination(Transform newDestination)
 	{
 		destination = newDestination;
 

@@ -26,7 +26,7 @@ public abstract class AttackState : iEnemyState
 
     public void AttackTarget()
     {
-        //controller.agent.Stop();
+        controller.agent.Stop();
 		controller.anim.SetBool ("Walking", false);
         controller.LookAtTarget();
 

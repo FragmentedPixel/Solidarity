@@ -25,8 +25,7 @@ public class AggroState : iTroopState
 
     private void Aggro()
     {
-		controller.agent.SetDestination(controller.target.position);
-		controller.agent.Resume ();
+		controller.agent.SetDestination(controller.target);
 		controller.LookAtTarget ();
 
 		if (controller.DistanceToTarget() < controller.fightRange)

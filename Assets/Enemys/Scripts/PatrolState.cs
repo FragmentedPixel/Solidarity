@@ -34,7 +34,6 @@ public class PatrolState : iEnemyState
     private void Patrol ()
 	{
 		CheckCurrentDestionation ();
-        //controller.agent.Resume();
 		controller.anim.SetBool ("Walking", true);
 
 		if (controller.agent.ReachedDestination) 

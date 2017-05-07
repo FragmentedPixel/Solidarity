@@ -50,9 +50,9 @@ public class aGrid : MonoBehaviour
                 Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (y * nodeDiameter + nodeRadius);
                 bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask));
 
-                int movementPenalty = walkable ? (0) : obstacleAvoidance;
+                //int movementPenalty = walkable ? (0) : obstacleAvoidance;
 
-                /* Walkable Pen
+                //Walkable Pen
                 int movementPenalty = 0;
 
                 Ray ray = new Ray(worldPoint + Vector3.up * 50f, Vector3.down);
@@ -60,9 +60,9 @@ public class aGrid : MonoBehaviour
 
                 if (Physics.Raycast(ray, out hit, 100f, walkableMask))
                     movementPenalty = 0; // it has hit a walkbable.
-                    if (!walkable)
+                if (!walkable)
                     movementPenalty = obstacleAvoidance;
-               */
+               
 
 
 
@@ -183,7 +183,7 @@ public class aGrid : MonoBehaviour
     #region Gizmos
     private void OnDrawGizmos()
     {
-        Gizmos.DrawCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
+        Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
 
         if (!displayGizmos || grid == null)
             return;
