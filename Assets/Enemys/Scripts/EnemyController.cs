@@ -86,10 +86,11 @@ public class EnemyController : MonoBehaviour
                 if (distance < newDistance)
                 {
                     newDistance = distance;
-                    target = targets[i];
+                    SetNewTarget(targets[i]);
                 }
             }
         }
+
 
 		if (target == null)
 			currentState.ToPatrolState ();
@@ -98,6 +99,12 @@ public class EnemyController : MonoBehaviour
 		else
 			currentState.ToChaseState ();
 	}
+
+    public void SetNewTarget(Transform newTarget)
+    {
+        target = newTarget;
+        agent.SetDestination(target);
+    }
 
 	public void LookAtTarget()
 	{

@@ -110,8 +110,6 @@ public class aAgent : MonoBehaviour
             path.DrawWithGizmos();
     }
 
-    //TO Implement
-
     public void SetDestination(Transform t)
     {
         target = t;

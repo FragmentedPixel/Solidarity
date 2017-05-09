@@ -22,7 +22,7 @@ public class PatrolState : iEnemyState
     {
 		if(other.GetComponent<TroopHitPoints>() != null)
         {
-            controller.target = other.transform;
+            controller.SetNewTarget(other.transform);
 
 			if (controller.DistanceToTarget() < controller.attackRange)
 				ToAttackState ();

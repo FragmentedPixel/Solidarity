@@ -21,7 +21,6 @@ public class ChaseState : iEnemyState
     #region Methods
     private void Chase()
     {
-        controller.agent.SetDestination(controller.target);
 		controller.anim.SetBool ("Walking", true);
         controller.LookAtTarget();
 
